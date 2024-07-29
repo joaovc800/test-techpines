@@ -10,5 +10,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function(){
     Route::get('/album', [AlbumController::class, 'index']);
+    Route::post('/album', [AlbumController::class, 'create']);
+    Route::get('/album/{id}', [AlbumController::class, 'show']);
 });
 
