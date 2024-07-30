@@ -9,10 +9,12 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function(){
+    Route::get('/album/search', [AlbumController::class, 'search']);
     Route::get('/album', [AlbumController::class, 'index']);
     Route::post('/album', [AlbumController::class, 'create']);
     Route::get('/album/{id}', [AlbumController::class, 'show']);
     Route::put('/album/{id}', [AlbumController::class, 'update']);
     Route::delete('/album/{id}', [AlbumController::class, 'destroy']);
+
 });
 

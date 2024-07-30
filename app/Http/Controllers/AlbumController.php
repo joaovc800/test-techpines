@@ -19,6 +19,31 @@ class AlbumController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $query = Album::query();
+        $keyword = $request->input('name');
+
+        if($keyword){
+            $query->where('name', 'like', "%{$keyword}%");
+        }
+
+
+        $albums = $query->get();
+
+        if($albums->isEmpty()){
+            return response()->json([
+                'message' => 'Album not found'
+            ], Response::HTTP_NOT_FOUND);
+        }else{
+            return response()->json([
+                'data' => $albums,
+                'message' => 'List articles',
+                'status' => Response::HTTP_OK
+            ], Response::HTTP_OK);
+        }
+    }
+
     public function create(Request $request)
     {
         $validate = Validator::make(request()->all(), [
