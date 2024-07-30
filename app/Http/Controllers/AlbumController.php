@@ -44,8 +44,9 @@ class AlbumController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
+
         $validate = Validator::make(request()->all(), [
             'name' => 'required|string|max:255',
             'artist' => 'required|string|max:255',
@@ -92,6 +93,7 @@ class AlbumController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $album = Album::find($id);
 
         if(!$album){
@@ -130,8 +132,9 @@ class AlbumController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+
         $album = Album::find($id);
 
         try {

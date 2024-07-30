@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
@@ -17,11 +17,9 @@ Route::middleware('auth:sanctum')->group(function(){
 
 Route::prefix('v1')->group(function(){
     Route::get('/album/search', [AlbumController::class, 'search']);
-    Route::get('/album', [AlbumController::class, 'index']);
-    Route::post('/album', [AlbumController::class, 'create']);
-    Route::get('/album/{id}', [AlbumController::class, 'show']);
-    Route::put('/album/{id}', [AlbumController::class, 'update']);
-    Route::delete('/album/{id}', [AlbumController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::resource('/album', AlbumController::class);
+    });
 
 });
 
