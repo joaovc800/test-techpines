@@ -14,7 +14,7 @@ class AlbumController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => Album::latest()->get(),
+            'data' => Album::with('tracks')->get(),
             'message' => 'List Albums'
         ]);
     }
@@ -76,7 +76,7 @@ class AlbumController extends Controller
 
     public function show($id)
     {
-        $album = Album::where('id', $id)->first();
+        $album = Album::with('tracks')->where('id', $id)->first();
 
         if($album){
             return response()->json([

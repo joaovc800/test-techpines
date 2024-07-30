@@ -38,7 +38,7 @@ class TrackController extends Controller
         }else{
             return response()->json([
                 'data' => $track,
-                'message' => 'List articles',
+                'message' => 'List Tracks',
                 'status' => Response::HTTP_OK
             ], Response::HTTP_OK);
         }
@@ -69,7 +69,7 @@ class TrackController extends Controller
             Log::error("Error storing :" . $e->getMessage());
 
             return response()->json([
-                'message' => 'Failed Stored'
+                'message' => 'Failed Track Stored'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
