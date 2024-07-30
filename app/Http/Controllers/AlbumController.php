@@ -63,4 +63,43 @@ class AlbumController extends Controller
         }
 
     }
+
+    public function update(Request $request, $id){
+        $album = Album::find($id);
+
+        if(!$album){
+            return response()->json([
+                'message' => 'Album not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $validate = Validator::make(request()->all(), [
+            'name' => 'required|string|max:255',
+            'artist' => 'required|string|max:255',
+            'release_year' => 'required|integer|digits:4'
+        ]);
+
+        if($validate->fails()){
+            return response()->json($validate->errors());
+        }
+
+        try {
+
+            $data = $album->update($request->all());
+
+            return response()->json([
+                'data' => $data,
+                'message' => 'Album Update'
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            Log::error("Error storing :" . $e->getMessage());
+
+            return response()->json([
+                'data' => $data,
+                'message' => 'Failed Update'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }
