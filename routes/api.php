@@ -13,5 +13,6 @@ Route::prefix('v1')->group(function(){
     Route::post('/album', [AlbumController::class, 'create']);
     Route::get('/album/{id}', [AlbumController::class, 'show']);
     Route::put('/album/{id}', [AlbumController::class, 'update']);
+    Route::delete('/album/{id}', [AlbumController::class, 'destroy']);
 });
 

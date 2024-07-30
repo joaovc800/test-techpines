@@ -49,7 +49,8 @@ class AlbumController extends Controller
         }
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $album = Album::where('id', $id)->first();
 
         if($album){
@@ -64,7 +65,8 @@ class AlbumController extends Controller
 
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $album = Album::find($id);
 
         if(!$album){
@@ -101,5 +103,25 @@ class AlbumController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    public function destroy($id)
+    {
+        $album = Album::find($id);
+
+        try {
+            $album->delete();
+
+            return response()->json([
+                'message' => 'Album deleted'
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            Log::error("Error Delete Album:" . $e->getMessage());
+
+            return response()->json([
+                'message' => 'Failed Delete Album'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
