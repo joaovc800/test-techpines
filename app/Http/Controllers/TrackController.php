@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Album;
+use App\Models\Track;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class AlbumController extends Controller
+class TrackController extends Controller
 {
     public function index()
     {
         return response()->json([
-            'data' => Album::latest()->get(),
-            'message' => 'List Albums'
+            'data' => Track::latest()->get(),
+            'message' => 'List Tracks'
         ]);
     }
 
     public function search(Request $request)
     {
-        $query = Album::query();
+        $query = Track::query();
         $keyword = $request->input('name');
 
         if($keyword){
@@ -29,15 +29,15 @@ class AlbumController extends Controller
         }
 
 
-        $albums = $query->get();
+        $track = $query->get();
 
-        if($albums->isEmpty()){
+        if($track->isEmpty()){
             return response()->json([
-                'message' => 'Album not found'
+                'message' => 'Track not found'
             ], Response::HTTP_NOT_FOUND);
         }else{
             return response()->json([
-                'data' => $albums,
+                'data' => $track,
                 'message' => 'List articles',
                 'status' => Response::HTTP_OK
             ], Response::HTTP_OK);
@@ -49,8 +49,8 @@ class AlbumController extends Controller
 
         $validate = Validator::make(request()->all(), [
             'name' => 'required|string|max:255',
-            'artist' => 'required|string|max:255',
-            'release_year' => 'required|integer|digits:4'
+            'duration' => 'required|integer',
+            'album_id' => 'required|exists:albums,id'
         ]);
 
         if($validate->fails()){
@@ -59,10 +59,10 @@ class AlbumController extends Controller
 
         try {
 
-            $data = Album::create($request->all());
+            $data = Track::create($request->all());
             return response()->json([
                 'data' => $data,
-                'message' => 'Album stored'
+                'message' => 'Track stored'
             ], Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
@@ -76,15 +76,15 @@ class AlbumController extends Controller
 
     public function show($id)
     {
-        $album = Album::where('id', $id)->first();
+        $track = Track::where('id', $id)->first();
 
-        if($album){
+        if($track){
             return response()->json([
-                'data' => $album
+                'data' => $track
             ], Response::HTTP_OK);
         }else{
             return response()->json([
-                'message' => 'Album not found'
+                'message' => 'Track not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
@@ -93,18 +93,18 @@ class AlbumController extends Controller
     public function update(Request $request, $id)
     {
 
-        $album = Album::find($id);
+        $track = Track::find($id);
 
-        if(!$album){
+        if(!$track){
             return response()->json([
-                'message' => 'Album not found'
+                'message' => 'Track not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
         $validate = Validator::make(request()->all(), [
             'name' => 'required|string|max:255',
-            'artist' => 'required|string|max:255',
-            'release_year' => 'required|integer|digits:4'
+            'duration' => 'required|integer',
+            'album_id' => 'required|exists:albums,id'
         ]);
 
         if($validate->fails()){
@@ -113,11 +113,11 @@ class AlbumController extends Controller
 
         try {
 
-            $data = $album->update($request->all());
+            $data = $track->update($request->all());
 
             return response()->json([
                 'data' => $data,
-                'message' => 'Album Update'
+                'message' => 'Track Update'
             ], Response::HTTP_OK);
 
         } catch (\Exception $e) {
@@ -131,23 +131,23 @@ class AlbumController extends Controller
 
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
 
-        $album = Album::find($id);
+        $track = Track::find($id);
 
         try {
-            $album->delete();
+            $track->delete();
 
             return response()->json([
-                'message' => 'Album deleted'
+                'message' => 'Track deleted'
             ], Response::HTTP_OK);
 
         } catch (\Exception $e) {
-            Log::error("Error Delete Album:" . $e->getMessage());
+            Log::error("Error Delete Track:" . $e->getMessage());
 
             return response()->json([
-                'message' => 'Failed Delete Album'
+                'message' => 'Failed Delete Track'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
