@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('duration');
+            $table->string('image')->nullable();
             $table->foreignId('album_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

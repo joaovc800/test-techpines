@@ -23,13 +23,13 @@ Route::prefix('v1')->group(function(){
 
     Route::get('/track/search', [TrackController::class, 'search']);
 
-    Route::middleware('auth:sanctum')->group(function(){
+    //Route::middleware('auth:sanctum')->group(function(){
 
         Route::resource('/album', AlbumController::class);
 
         Route::resource('/track', TrackController::class);
 
-    });
+    //});
 
 });
 

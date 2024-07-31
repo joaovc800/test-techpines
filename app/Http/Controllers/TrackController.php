@@ -47,7 +47,7 @@ class TrackController extends Controller
     public function store(Request $request)
     {
 
-        $validate = Validator::make(request()->all(), [
+        $validate = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'duration' => 'required|integer',
             'album_id' => 'required|exists:albums,id'
@@ -101,7 +101,7 @@ class TrackController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $validate = Validator::make(request()->all(), [
+        $validate = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'duration' => 'required|integer',
             'album_id' => 'required|exists:albums,id'

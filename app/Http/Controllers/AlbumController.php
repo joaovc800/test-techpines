@@ -47,7 +47,7 @@ class AlbumController extends Controller
     public function store(Request $request)
     {
 
-        $validate = Validator::make(request()->all(), [
+        $validate = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'artist' => 'required|string|max:255',
             'release_year' => 'required|integer|digits:4'
@@ -69,7 +69,7 @@ class AlbumController extends Controller
             Log::error("Error storing :" . $e->getMessage());
 
             return response()->json([
-                'message' => 'Failed Stored'
+                'message' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -101,7 +101,7 @@ class AlbumController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $validate = Validator::make(request()->all(), [
+        $validate = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'artist' => 'required|string|max:255',
             'release_year' => 'required|integer|digits:4'
